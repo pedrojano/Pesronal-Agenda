@@ -82,7 +82,11 @@ exports.login = async (req, res) => {
 
     res.json({
       message: "Login realizado!",
-      user,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      },
       token,
     });
   } catch (error) {

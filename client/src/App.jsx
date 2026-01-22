@@ -1,11 +1,13 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Pages
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Agenda from "./pages/agenda/Agenda";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Profile from "./pages/profile/Profile";
 
+import PrivateRoute from "./components/private/PrivateRoute";
 
 function App() {
   return (
@@ -14,7 +16,12 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/agenda" element={<Agenda />} />
+
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/agenda" element={<Agenda />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

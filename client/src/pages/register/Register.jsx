@@ -21,19 +21,19 @@ export default function Register() {
         password,
       });
 
-      response.status(200).json("Conta criada com sucesso!");
-      // alert("Conta criada com sucesso!");
+      alert("Conta criada com sucesso!");
+    
 
       localStorage.setItem("user_token", response.data.token);
 
-      navigate("/dashboard"); // Trocar para rota das tarefas
+      navigate("/agenda"); 
     } catch (error) {
       console.error("Erro ao criar conta:", error);
     }
   }
 
   function handleGoogleLogin() {
-    console.message("Em breve login com google estará disponível!");
+    alert("Use a tela de login para acessar com o google.");
   }
 
   return (

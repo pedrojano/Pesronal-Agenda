@@ -70,7 +70,12 @@ export default function Agenda() {
   };
 
   useEffect(() => {
-    fetchTasks();
+    const token = localStorage.getItem("user_token");
+
+    if (token) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      fetchTasks();
+    }
   }, []);
 
   const handleSelectSlot = ({ start }) => {

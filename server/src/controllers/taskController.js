@@ -95,7 +95,7 @@ exports.getMetrics = async (req, res) => {
 
   try {
     const metrics = await db.query(
-      "SELECT status, COUNT(*) as conut FROM tasks WHERE user_id = $1 GROUP BY status",
+      "SELECT status, COUNT(*) as count FROM tasks WHERE user_id = $1 GROUP BY status",
       [userId]
     );
 
@@ -103,9 +103,44 @@ exports.getMetrics = async (req, res) => {
     metrics.rows.forEach((row) => {
       formattedStats[row.status] = parseInt(row.count);
     });
+    const nextTasks = await db.query(
+      "SELECT id, title, start_time, status FROM tasks WHERE user_id = $1 AND start_time >= NOW() ORDER BY start_time ASC LIMIT 5",
+      [userId]
+    );
 
-    res.json(formattedStats);
+    res.json({
+      status: formattedStats,
+      nextTasks: nextTasks.rows,
+    });
   } catch (error) {
+    console.error("Erro ao buscar métricas", error);
     res.status(500).json({ error: "Erro ao buscar métricas" });
+  }
+};
+
+exports.updateTaskStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const userId = req.user.id;
+
+  const validStatuses = ["pending", "done", "rescheduled", "canceled"];
+
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ error: "Status inválido" });
+  }
+
+  try {
+    const result = await db.query(
+      "UPDATE tasks SET status = $1 WHERE id = $2 AND user_id = $3 RETURNING *",
+      [status, id, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Tarefa não encontrada" });
+    }
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao atualizar status da tarefa" });
   }
 };

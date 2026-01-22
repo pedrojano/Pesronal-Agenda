@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from "@react-oauth/google";
 import api from "../../services/api";
 import "./Login.css";
 import { FiMail, FiLock } from "react-icons/fi";
@@ -16,11 +16,12 @@ export default function Login() {
       try {
         console.log("Token Google:", tokenResponse);
         const response = await api.post("/auth/google", {
-          access_token: tokenResponse.access_token 
+          access_token: tokenResponse.access_token,
         });
 
         localStorage.setItem("user_token", response.data.token);
-        api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        api.defaults.headers.common["Authorization"] =
+          `Bearer ${response.data.token}`;
 
         navigate("/dashboard");
       } catch (error) {
@@ -28,7 +29,7 @@ export default function Login() {
         alert("Falha no login com Google.");
       }
     },
-    onError: () => console.log('Login falhou'),
+    onError: () => console.log("Login falhou"),
   });
 
   async function handleLogin(event) {
@@ -36,8 +37,10 @@ export default function Login() {
     try {
       const response = await api.post("/auth/login", { email, password });
       localStorage.setItem("user_token", response.data.token);
-      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-      navigate("/dashboard");
+      localStorage.setItem("userName", response.data.user.name);
+      api.defaults.headers.common["Authorization"] =
+        `Bearer ${response.data.token}`;
+      navigate("/agenda");
     } catch (error) {
       console.error("Erro ao realizar login: ", error);
       alert("E-mail ou senha incorretos.");
@@ -90,9 +93,9 @@ export default function Login() {
             <span>ou continue com</span>
           </div>
 
-          <button 
-            type="button" 
-            className="btn-google" 
+          <button
+            type="button"
+            className="btn-google"
             onClick={() => handleGoogle()}
           >
             <FcGoogle className="google-icon" />

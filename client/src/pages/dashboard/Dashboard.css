@@ -1,0 +1,122 @@
+.dashboard-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.dashboard-header {
+  margin-bottom: 40px;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.dashboard-header p {
+  color: #666;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.metric-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+}
+
+.metric-card h3 {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.metric-card .number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.card-pending { border-left: 5px solid #f6ad55; }
+.card-pending .number { color: #d69e2e; }
+
+.card-done { border-left: 5px solid #48bb78; }
+.card-done .number { color: #38a169; }
+
+.card-canceled { border-left: 5px solid #e53e3e; }
+.card-canceled .number { color: #c53030; }
+
+
+.next-tasks-section {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-agenda {
+  background-color: #764ba2;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.task-row:last-child {
+  border-bottom: none;
+}
+
+.task-time {
+  font-weight: bold;
+  color: #764ba2;
+  min-width: 80px;
+}
+
+.task-title {
+  flex: 1;
+  color: #444;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-pending { background: #ffeebc; color: #d69e2e; }
+.badge-done { background: #c6f6d5; color: #38a169; }

@@ -1,4 +1,3 @@
-/* Fundo escuro atrás da janela */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -13,7 +12,6 @@
   backdrop-filter: blur(2px);
 }
 
-/* A caixa branca da janela */
 .modal-content {
   background: white;
   padding: 2rem;
@@ -42,7 +40,6 @@
   margin-bottom: 1rem;
 }
 
-/* GRID para Início e Fim */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -89,7 +86,6 @@
   min-height: 80px;
 }
 
-/* Checkbox */
 .checkbox-group {
   display: flex;
   align-items: center;
@@ -115,24 +111,21 @@
   margin: 0;
 }
 
-/* --- ÁREA DOS BOTÕES (CORRIGIDA) --- */
 .modal-actions {
   display: flex;
-  justify-content: space-between; /* Joga o "Excluir" pra esquerda e o resto pra direita */
+  justify-content: space-between; 
   align-items: center;
   margin-top: 2rem;
   border-top: 1px solid #e5e7eb;
   padding-top: 1.5rem;
 }
 
-/* Agrupador para Cancelar + Salvar */
 .actions-right {
   display: flex;
   gap: 1rem;
-  margin-left: auto; /* Garante que vá para a direita mesmo se não tiver botão Excluir */
+  margin-left: auto;
 }
 
-/* Botão Vermelho de Excluir */
 .btn-delete {
   background: #ef4444;
   color: white;
