@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import "./Profile.css";
-
 import { FiCamera } from "react-icons/fi";
 
 export default function Profile() {
@@ -9,10 +8,9 @@ export default function Profile() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [avatarUrl, setAvatarUrl] = useState(null);
-  const [avatarFile, setAvavtarFile] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
 
   useEffect(() => {
-    // Carrega dados da tela
     async function loadProfile() {
       try {
         const response = await api.get("users/profile");
@@ -28,42 +26,40 @@ export default function Profile() {
     }
     loadProfile();
   }, []);
-}
 
-//
+  function handleFileChange(e) {
+    const file = e.target.files[0];
 
-function handleFileChange(e) {
-  const file = e.target.files[0];
-
-  if (file) {
-    setAvavtarFile(file);
-    setAvatarUrl(URL.createObjectURL(file));
-  }
-}
-
-async function handleSubmit(e) {
-  e.preventDefault();
-
-  const data = new FormData();
-  data.append("name", name);
-  data.append("email", email);
-
-  if (password) {
-    data.append("password", password);
+    if (file) {
+      setAvatarFile(file); 
+      setAvatarUrl(URL.createObjectURL(file));
+    }
   }
 
-  if (avatarFile) {
-    data.append("avatar", avatarFile);
-  }
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-  try {
-    await api.put("/users/profile", data);
-    alert("Perfil atualizado com sucesso!");
+    const data = new FormData();
+    data.append("name", name);
+    data.append("email", email);
 
-    localStorage.setItem("userName", name);
-  } catch (error) {
-    alert("Erro ao atualizar perfil");
-    console.error(error);
+    if (password) {
+      data.append("password", password);
+    }
+
+    if (avatarFile) {
+      data.append("avatar", avatarFile);
+    }
+
+    try {
+      await api.put("/users/profile", data);
+      alert("Perfil atualizado com sucesso!");
+
+      localStorage.setItem("userName", name);
+    } catch (error) {
+      alert("Erro ao atualizar perfil");
+      console.error(error);
+    }
   }
 
   return (
@@ -125,4 +121,4 @@ async function handleSubmit(e) {
       </form>
     </div>
   );
-}
+} 

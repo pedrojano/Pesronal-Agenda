@@ -7,7 +7,6 @@ O **Agenda Pro** é uma aplicação web completa (Fullstack) para gerenciamento 
 ## 🚀 Tecnologias Utilizadas
 
 ### Frontend (Client)
-
 - **React.js** (com Vite)
 - **React Router Dom** (Navegação)
 - **@react-oauth/google** (Autenticação Social)
@@ -15,7 +14,6 @@ O **Agenda Pro** é uma aplicação web completa (Fullstack) para gerenciamento 
 - **CSS3** (Estilização modular)
 
 ### Backend (Server)
-
 - **Node.js** & **Express**
 - **PostgreSQL** (Banco de Dados)
 - **JWT (JsonWebToken)** (Segurança de sessão)
@@ -56,7 +54,6 @@ O projeto é dividido em dois diretórios principais:
     │   └── /components   # Botões, Inputs, Modais
 
 ```
-
 🛠️ Como Rodar o Projeto
 Pré-requisitos
 Node.js instalado
@@ -66,9 +63,9 @@ PostgreSQL instalado e rodando
 Conta no Google Cloud (para obter o Client ID)
 
 1. Configuração do Banco de Dados
-   No seu PGAdmin ou terminal SQL, crie o banco e as tabelas:
+No seu PGAdmin ou terminal SQL, crie o banco e as tabelas:
 
-```SQL
+````SQL
 
 CREATE DATABASE agenda_db;
 
@@ -92,14 +89,12 @@ CREATE TABLE tasks (
     end_time TIMESTAMP,
     status VARCHAR(20) DEFAULT 'pendente'
 );
-```
-
+````
 2. Configurando Variáveis de Ambiente (.env)
-   No Backend (/server/.env):
+No Backend (/server/.env):
 
 Snippet de código
-
-```
+````
 DB_USER=postgres
 DB_PASSWORD=sua_senha
 DB_HOST=localhost
@@ -107,39 +102,32 @@ DB_PORT=5432
 DB_NAME=agenda_db
 JWT_SECRET=seu_segredo_super_secreto
 No Frontend (/client/.env):
-```
-
+````
 Snippet de código
-
-```
+````
 VITE_GOOGLE_CLIENT_ID=seu_client_id_do_google.apps.googleusercontent.com
-```
-
+````
 3. Instalando e Rodando
-   Terminal 1 - Backend:
+Terminal 1 - Backend:
 
 Bash:
-
-```
+````
 cd server
 npm install
 npm run dev
-```
-
+````
 # Servidor rodará na porta 3000 (ou a definida)
-
 Terminal 2 - Frontend:
 
 Bash:
 
-```
+````
 cd client
 npm install
 npm run dev
-```
+````
 
 # React rodará na porta 5173
-
 Acesse http://localhost:5173 no seu navegador.
 
 🔐 Detalhes da Autenticação Google

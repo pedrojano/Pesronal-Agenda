@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads")));
+app.use("/upload", express.static(path.resolve(__dirname, "..", "upload")));
 
 app.get("/", (req, res) => {
   res.send("Servidor Agenda Pro está rodando!");

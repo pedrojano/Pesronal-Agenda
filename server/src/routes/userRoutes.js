@@ -6,7 +6,7 @@ const upload = require("../config/multerConfig");
 
 router.use(authMiddleware);
 router.get("/profile", userController.getProfile);
-router.put("/profile", userController.updateProfile);
+
 router.put("/profile", upload.single("avatar"), userController.updateProfile);
 
 module.exports = router;
