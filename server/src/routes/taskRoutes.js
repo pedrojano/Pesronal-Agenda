@@ -8,7 +8,7 @@ router.post("/", taskController.createTask);
 router.get("/", taskController.getTasks);
 router.get("/metrics", taskController.getMetrics);
 router.put("/:id", taskController.updateTask);
-router.patch("/:id", taskController.updateTaskStatus);
+router.patch("/:id", taskController.updateTaskStatus); // Atualiza só o status
 router.delete("/:id", taskController.deleteTask);
 
 module.exports = router;

@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -13,7 +15,9 @@ import PrivateLayout from "./components/layout/PrivateLayout";
 
 function App() {
   return (
+   
     <BrowserRouter>
+     <ToastContainer position="top-right" autoClose={3000} theme="colored" />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />

@@ -5,6 +5,7 @@ import api from "../../services/api";
 import "./Login.css";
 import { FiMail, FiLock } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -26,10 +27,10 @@ export default function Login() {
         navigate("/dashboard");
       } catch (error) {
         console.error("Erro Google:", error);
-        alert("Falha no login com Google.");
+        toast.error("Falha no login com Google.");
       }
     },
-    onError: () => console.log("Login falhou"),
+    onError: () => toast.error("Login falhou"),
   });
 
   async function handleLogin(event) {
@@ -43,7 +44,7 @@ export default function Login() {
       navigate("/agenda");
     } catch (error) {
       console.error("Erro ao realizar login: ", error);
-      alert("E-mail ou senha incorretos.");
+      toast.error("E-mail ou senha incorretos.");
     }
   }
 

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+// import Swal from "sweetalert2";
 import api from "../../../../services/api";
 import "./TaskModal.css";
 
@@ -36,9 +38,9 @@ export default function TaskModal({
       setEndTime(
         initialDate
           ? formatToLocalISO(
-              new Date(new Date(initialDate).getTime() + 60 * 60 * 1000)
+              new Date(new Date(initialDate).getTime() + 60 * 60 * 1000),
             )
-          : ""
+          : "",
       );
       setNotify(true);
     }
@@ -58,31 +60,81 @@ export default function TaskModal({
 
       if (taskToEdit) {
         await api.put(`/tasks/${taskToEdit.id}`, payload);
-        alert("Tarefa atualizada com sucesso!");
+        // Swal.fire({
+        //   title: "Drag me!",
+        //   icon: "success",
+        //   draggable: true,
+        // });
+         toast.success("Tarefa atualizada com sucesso!");
       } else {
         await api.post("/tasks", payload);
-        alert("Tarefa criada com sucesso!");
+        toast.success("Tarefa criada com sucesso!");
+        // Swal.fire({
+        //   title: "Drag me!",
+        //   icon: "success",
+        //   draggable: true,
+        // });
       }
 
       onTaskCreated();
       onClose();
     } catch (error) {
       console.error(error);
-      alert("Erro: " + (error.response?.data?.error || error.message));
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: "Something went wrong!",
+      //   footer: '<a href="#">Why do I have this issue?</a>',
+      // });
+      toast.error(
+        "Erro ao salvar tarefa: " +
+          (error.response?.data?.error || error.message),
+      );
     }
   }
 
   async function handleDelete() {
+    // Verificar esse alert
     if (!window.confirm("Tem certeza que deseja excluir esta tarefa?")) return;
+      // !Swal.fire({
+      //   title: "Are you sure?",
+      //   text: "You won't be able to revert this!",
+      //   icon: "warning",
+      //   showCancelButton: true,
+      //   confirmButtonColor: "#3085d6",
+      //   cancelButtonColor: "#d33",
+      //   confirmButtonText: "Yes, delete it!",
+      // }).then((result) => {
+      //   if (result.isConfirmed) {
+      //     Swal.fire({
+      //       title: "Deleted!",
+      //       text: "Your file has been deleted.",
+      //       icon: "success",
+      //     });
+    //     }
+    //   })
+    // )
+    //   return;
 
     try {
       await api.delete(`/tasks/${taskToEdit.id}`);
-      alert("Tarefa excluida!");
+      toast.success("Tarefa excluída com sucesso!");
+      // Swal.fire({
+      //   title: "Drag me!",
+      //   icon: "success",
+      //   draggable: true,
+      // });
       onTaskCreated();
       onClose();
     } catch (error) {
       console.error(error);
-      alert("Erro ao excluir: " + error.message);
+      toast.error("Erro ao excluir tarefa: " + error.message);
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: "Something went wrong!",
+      //   footer: '<a href="#">Why do I have this issue?</a>',
+      // });
     }
   }
 

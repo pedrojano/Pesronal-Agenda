@@ -25,6 +25,10 @@ export default function Sidebar() {
           <span>Dashboard</span>
         </NavLink>
 
+        
+        {/* Aqui vai entrar o link para o Agente virutal  */}
+        
+
         <NavLink to="/agenda" className="nav-link">
           <FiCalendar size={20} />
           <span>Agenda</span>

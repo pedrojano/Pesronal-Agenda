@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import api from "../../services/api";
 import "./Agenda.css";
@@ -63,7 +64,7 @@ export default function Agenda() {
     } catch (error) {
       console.error("Erro ao buscar tarefas:", error);
       if (error.response?.status === 401) {
-        alert("Sessão expirada. Faça login novamente.");
+        toast.error("Sessão expirada. Faça login novamente.");
         navigate("/");
       }
     }

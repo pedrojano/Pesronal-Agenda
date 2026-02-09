@@ -4,6 +4,7 @@ import api from "../../services/api";
 import "./Register.css";
 import { FiUser, FiMail, FiLock } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -21,7 +22,7 @@ export default function Register() {
         password,
       });
 
-      alert("Conta criada com sucesso!");
+      toast.success("Conta criada com sucesso!");
     
 
       localStorage.setItem("user_token", response.data.token);
@@ -29,11 +30,12 @@ export default function Register() {
       navigate("/agenda"); 
     } catch (error) {
       console.error("Erro ao criar conta:", error);
+      toast.error("Erro ao criar conta. Tente novamente.");
     }
   }
 
   function handleGoogleLogin() {
-    alert("Use a tela de login para acessar com o google.");
+    toast.info("Use a tela de login para acessar com o google.");
   }
 
   return (

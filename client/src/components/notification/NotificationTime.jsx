@@ -3,124 +3,175 @@ import Swal from "sweetalert2";
 import api from "../../services/api";
 
 const NotificationTime = ({ events, onTaskUpdated }) => {
-  const notifiedTasks = useRef(new Map());
+  const notifiedStart = useRef(new Set());
+  const notifiedEnd = useRef(new Set());
+
+  const isAlertOpen = useRef(false);
 
   useEffect(() => {
-    const checkTime = () => {
+    const checkTime = async () => {
+      if (isAlertOpen.current) return;
+
       const now = new Date();
 
-      events.forEach((task) => {
-        if (task.resource?.status === "cancelada") return;
-        if (!task.resource?.notify) return;
+      if (!events || events.length === 0) return;
+      for (const task of events) {
+        if (task.status !== "pending") continue;
 
-        const timeDiff = task.start - now;
-        const minutesUntil = Math.floor(timeDiff / 60000);
+        const rawStart = task.start_time || task.start;
+        const rawEnd = task.end_time || task.end;
+        const startTime = new Date(rawStart);
+        const endTime = new Date(rawEnd);
 
-        const horaFormatada = new Date(task.start).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+        if (isNaN(startTime.getTime())) continue;
 
-        const taskSignature = `${task.id}-${task.start.getTime()}`;
+        const taskId = task.id;
+        const startKey = `${taskId}-${startTime.getTime()}-start`;
+        const endKey = `${taskId}-${endTime.getTime()}-end`;
 
-        if (minutesUntil <= 10 && minutesUntil >= 0) {
-          if (notifiedTasks.current.has(taskSignature)) return;
+        const diffMs = startTime - now;
+        const minutesUntilStart = Math.floor(diffMs / 60000);
 
-          const audio = new Audio(
-            "https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"
-          );
-          audio.play().catch(() => {});
+        if (minutesUntilStart <= 10 && minutesUntilStart >= -2) {
+          if (!notifiedStart.current.has(startKey)) {
+            isAlertOpen.current = true;
+            notifiedStart.current.add(startKey);
+            playNotificationSound();
 
-          if (window.Notification.permission === "granted") {
-            new window.Notification(`${horaFormatada} - ${task.title}`, {
-
-              body: `Começa em ${minutesUntil} minutos, clique para opções.`,
-              icon: '/vite.svg',
-              requireInteraction: true
+            const horaFormatada = startTime.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
             });
+
+            await Swal.fire({
+              title: `Preparado?`,
+              html: `A tarefa <b>"${task.title}"</b> começa às ${horaFormatada}.<br>pode confirmar ou precisa reagendar?`,
+              icon: "info",
+              showDenyButton: true,
+              showCancelButton: true,
+              confirmButtonText: "Tudo certo",
+              denyButtonText: "Reagendar",
+              cancelButtonText: "Cancelar agora",
+              confirmButtonColor: "#3085d6",
+              denyButtonColor: "#f39c12",
+              cancelButtonColor: "#d33",
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+              } else if (result.isDenied) {
+                await handleReschedule(task, onTaskUpdated);
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                await handleCancel(task, onTaskUpdated);
+              }
+            });
+
+            isAlertOpen.current = false;
+
+            return;
           }
-
-          Swal.fire({
-            title: ` ${task.title}`,
-            text: `Sua tarefa está agendada para ${horaFormatada}, O que deseja fazer?`,
-            icon: "question",
-            showCancelButton: true,
-            showDenyButton: true,
-            confirmButtonText: "✅ Vou fazer",
-            denyButtonText: "📅 Reagendar",
-            cancelButtonText: "❌ Cancelar Tarefa",
-            cancelButtonColor: "#d33",
-            denyButtonColor: "#f39c12",
-            confirmButtonColor: "#3085d6",
-            allowOutsideClick: false,
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              Swal.fire("Ótimo!", "Bom trabalho.", "success");
-            } else if (result.isDenied) {
-              const { value: newDate } = await Swal.fire({
-                title: "Para quando?",
-                html: '<input type="datetime-local" id="swal-input-date" class="swal2-input">',
-                focusConfirm: false,
-                preConfirm: () => {
-                  return document.getElementById("swal-input-date").value;
-                },
-              });
-
-              if (newDate) {
-                try {
-                  const start = new Date(newDate);
-                  const end = new Date(start.getTime() + 60 * 60 * 1000);
-
-                  await api.put(`/tasks/${task.id}`, {
-                    title: task.title,
-                    description: task.description,
-                    start_time: start,
-                    end_time: end,
-                    notify: true,
-                    status: "reagendada",
-                  });
-
-                  Swal.fire(
-                    "Reagendado!",
-                    "Sua agenda foi atualizada.",
-                    "success"
-                  );
-                  if (onTaskUpdated) onTaskUpdated();
-                } catch (error) {
-                  Swal.fire("Erro", "Não foi possível reagendar.", "error");
-                }
-              }
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-              try {
-                await api.put(`/tasks/${task.id}`, {
-                  title: task.title,
-                  description: task.description,
-                  start_time: task.start,
-                  end_time: task.end,
-                  notify: false,
-                  status: "cancelada",
-                });
-
-                Swal.fire(
-                  "Cancelada",
-                  "A tarefa foi cancelada e registrada.",
-                  "error"
-                );
-                if (onTaskUpdated) onTaskUpdated();
-              } catch (error) {
-                Swal.fire("Erro", "Não foi possível cancelar.", "error");
-              }
-            }
-          });
         }
-      });
+
+        if (now > endTime) {
+          if (!notifiedEnd.current.has(endKey)) {
+            isAlertOpen.current = true;
+            notifiedEnd.current.add(endKey);
+            playNotificationSound();
+
+            await Swal.fire({
+              title: `Fim do tempo!`,
+              text: `A tarefa "${task.title}" terminou. Qual foi o resultado?`,
+              icon: "question",
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: "Concluída (Feita)",
+              denyButtonText: "Não fiz (Cancelar)",
+              confirmButtonColor: "#48bb78",
+              denyButtonColor: "#e53e3e",
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                await handleComplete(task, onTaskUpdated);
+              } else if (result.isDenied) {
+                await handleCancel(task, onTaskUpdated);
+              }
+            });
+
+            isAlertOpen.current = false;
+
+            return;
+          }
+        }
+      }
     };
 
-    const interval = setInterval(checkTime, 30000);
+    const interval = setInterval(checkTime, 5000);
+    checkTime();
+
     return () => clearInterval(interval);
   }, [events, onTaskUpdated]);
 
   return null;
 };
+
+const playNotificationSound = () => {
+  const audio = new Audio(
+    "https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3",
+  );
+  audio.play().catch(() => {});
+};
+
+//Completar
+async function handleComplete(task, callback) {
+  try {
+    await api.patch(`/tasks/${task.id}`, { status: "done" });
+    Swal.fire("Boa!", "Tarefa concluída.", "success");
+    if (callback) callback();
+  } catch (error) {
+    Swal.fire("Erro", "Erro ao salvar.", "error");
+  }
+}
+// Cancelar
+async function handleCancel(task, callback) {
+  try {
+    await api.patch(`/tasks/${task.id}`, { status: "canceled" });
+    Swal.fire("Ok", "Cancelada.", "info");
+    if (callback) callback();
+  } catch (error) {
+    Swal.fire("Erro", "Erro ao cancelar.", "error");
+  }
+}
+
+// Reagendar
+async function handleReschedule(task, callback) {
+  const { value: newDate } = await Swal.fire({
+    title: "Para quando?",
+    html: '<input type="datetime-local" id="swal-input-date" class="swal2-input">',
+    focusConfirm: false,
+    preConfirm: () => document.getElementById("swal-input-date").value,
+  });
+
+  if (newDate) {
+    try {
+      const start = new Date(newDate);
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+
+      await api.put(`/tasks/${task.id}`, {
+        title: task.title,
+        description: task.description,
+        start_time: start,
+        end_time: end,
+        notify: true,
+        status: "pending",
+      });
+
+      Swal.fire("Reagendado!", "Atualizado.", "success");
+      if (callback) callback();
+    } catch (error) {
+      Swal.fire("Erro", "Falha ao reagendar.", "error");
+    }
+  }
+}
 
 export default NotificationTime;

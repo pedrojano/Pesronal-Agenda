@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import "./Profile.css";
 import { FiCamera } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 export default function Profile() {
   const [name, setName] = useState("");
@@ -22,6 +23,7 @@ export default function Profile() {
         }
       } catch (error) {
         console.error("Erro ao carregar perfil", error);
+        toast.error("Erro ao carregar perfil");
       }
     }
     loadProfile();
@@ -53,11 +55,11 @@ export default function Profile() {
 
     try {
       await api.put("/users/profile", data);
-      alert("Perfil atualizado com sucesso!");
+      toast.success("Perfil atualizado com sucesso!");
 
       localStorage.setItem("userName", name);
     } catch (error) {
-      alert("Erro ao atualizar perfil");
+      toast.error("Erro ao atualizar perfil");
       console.error(error);
     }
   }
@@ -70,7 +72,7 @@ export default function Profile() {
         <div className="avatar-wrapper">
           <label htmlFor="avatarInput">
             <img
-              src={avatarUrl || "https://via.placeholder.com/150"}
+              src={avatarUrl}
               alt="Avatar"
               className="avatar-image"
             />
