@@ -4,7 +4,7 @@ import api from "../../services/api";
 import "./Register.css";
 import { FiUser, FiMail, FiLock } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -16,26 +16,42 @@ export default function Register() {
     e.preventDefault();
 
     try {
-      const response = await api.post('/auth/register', {
+      const response = await api.post("/auth/register", {
         name,
         email,
         password,
       });
-
-      toast.success("Conta criada com sucesso!");
-    
+      Swal.fire({
+        icon: "success",
+        title: "Conta criada com sucesso!",
+        text: "Bem-vindo ao Agenda Pro!",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#4CAF50",
+      });
 
       localStorage.setItem("user_token", response.data.token);
 
-      navigate("/agenda"); 
+      navigate("/agenda");
     } catch (error) {
       console.error("Erro ao criar conta:", error);
-      toast.error("Erro ao criar conta. Tente novamente.");
+      Swal.fire({
+        icon: "error",
+        title: "Erro ao criar conta",
+        text: error.response?.data?.error || "Tente novamente mais tarde.",
+        confirmButtonColor: "#e53e3e",
+      });
     }
   }
 
   function handleGoogleLogin() {
-    toast.info("Use a tela de login para acessar com o google.");
+    Swal.fire({
+      icon: "info",
+      title: "Login com Google",
+      text: "Use a tela de login para acessar com o google.",
+      confirmButtonText: "OK",
+        confirmButtonColor: "#3085d6",
+    });
+    navigate("/login");
   }
 
   return (

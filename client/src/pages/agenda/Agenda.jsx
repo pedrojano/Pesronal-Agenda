@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 import api from "../../services/api";
 import "./Agenda.css";
@@ -14,12 +14,12 @@ import NotificationTime from "../../components/notification/NotificationTime";
 moment.updateLocale("pt-br", {
   months:
     "Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro".split(
-      "_"
+      "_",
     ),
   monthsShort: "Jan_Fev_Mar_Abr_Mai_Jun_Jul_Ago_Set_Out_Nov_Dez".split("_"),
   weekdays:
     "Domingo_Segunda-feira_Terça-feira_Quarta-feira_Quinta-feira_Sexta-feira_Sábado".split(
-      "_"
+      "_",
     ),
   weekdaysShort: "Dom_Seg_Ter_Qua_Qui_Sex_Sáb".split("_"),
   weekdaysMin: "Dom_2ª_3ª_4ª_5ª_6ª_Sáb".split("_"),
@@ -64,7 +64,12 @@ export default function Agenda() {
     } catch (error) {
       console.error("Erro ao buscar tarefas:", error);
       if (error.response?.status === 401) {
-        toast.error("Sessão expirada. Faça login novamente.");
+        Swal.fire({
+          icon: "error",
+          title: "Sessão expirada. Faça login novamente.",
+          showConfirmButton: false,
+          timer: 3000,
+        });
         navigate("/");
       }
     }

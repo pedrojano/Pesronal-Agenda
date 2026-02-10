@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import "./Profile.css";
 import { FiCamera } from "react-icons/fi";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function Profile() {
   const [name, setName] = useState("");
@@ -11,19 +11,44 @@ export default function Profile() {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
 
+  const getAvatarUrl = (avatarPath) => {
+    if (!avatarPath) return null;
+
+    if (avatarPath.startsWith("http")) {
+      return avatarPath;
+    }
+
+    return `http://localhost:3000/uploads/${avatarPath}`;
+  };
+
   useEffect(() => {
     async function loadProfile() {
       try {
-        const response = await api.get("users/profile");
+        const response = await api.get("/users/profile");
+
         setName(response.data.name);
         setEmail(response.data.email);
 
-        if (response.data.avatar) {
-          setAvatarUrl(`http://localhost:3000/uploads/${response.data.avatar}`);
+        const imageSource = response.data.avatar || response.data.avatar_url;
+
+        if (imageSource) {
+          setAvatarUrl(getAvatarUrl(imageSource));
+        } else {
+          setAvatarUrl(null);
         }
       } catch (error) {
         console.error("Erro ao carregar perfil", error);
-        toast.error("Erro ao carregar perfil");
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Erro ao carregar perfil",
+        });
       }
     }
     loadProfile();
@@ -33,8 +58,8 @@ export default function Profile() {
     const file = e.target.files[0];
 
     if (file) {
-      setAvatarFile(file); 
-      setAvatarUrl(URL.createObjectURL(file));
+      setAvatarFile(file);
+      setAvatarUrl(URL.createObjectURL(file)); 
     }
   }
 
@@ -54,13 +79,36 @@ export default function Profile() {
     }
 
     try {
-      await api.put("/users/profile", data);
-      toast.success("Perfil atualizado com sucesso!");
+      const response = await api.put("/users/profile", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      localStorage.setItem("userName", name);
+      Swal.fire({
+        icon: "success",
+        title: "Perfil atualizado com sucesso!",
+        showConfirmButton: true,
+        confirmButtonColor: "#4CAF50",
+        confirmButtonText: "OK",
+        
+      });
+
+      localStorage.setItem("userName", response.data.user.name);
+
+      setPassword("");
+      setAvatarFile(null);
+
+      if (response.data.user && response.data.user.avatar) {
+        setAvatarUrl(getAvatarUrl(response.data.user.avatar));
+      }
     } catch (error) {
-      toast.error("Erro ao atualizar perfil");
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Erro ao atualizar perfil",
+        text: error.response?.data?.error || "Tente novamente mais tarde.",
+      });
     }
   }
 
@@ -72,7 +120,7 @@ export default function Profile() {
         <div className="avatar-wrapper">
           <label htmlFor="avatarInput">
             <img
-              src={avatarUrl}
+              src={avatarUrl || "https://via.placeholder.com/150"}
               alt="Avatar"
               className="avatar-image"
             />
@@ -123,4 +171,4 @@ export default function Profile() {
       </form>
     </div>
   );
-} 
+}

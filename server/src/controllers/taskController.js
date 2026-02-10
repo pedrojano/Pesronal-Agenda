@@ -43,32 +43,6 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-// exports.updateTask = async (req, res) => {
-//   const { id } = req.params;
-//   const { title, description, start_time, end_time, notify } = req.body;
-//   const userId = req.user.id;
-
-//   try {
-//     const result = await db.query(
-//       `UPDATE tasks 
-//        SET title = $1, description = $2, start_time = $3, end_time = $4, notify = $5 
-//        WHERE id = $6 AND user_id = $7 RETURNING *`,
-//       [title, description, start_time, end_time, notify, id, userId]
-//     );
-
-//     if (result.rows.length === 0) {
-//       return res
-//         .status(404)
-//         .json({ error: "Tarefa não encontrada ou sem permissão." });
-//     }
-
-//     res.json(result.rows[0]);
-//   } catch (error) {
-//     console.error("Erro ao atualizar tarefa:", error);
-//     res.status(500).json({ error: "Erro interno ao atualizar." });
-//   }
-// };
-
 exports.deleteTask = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;

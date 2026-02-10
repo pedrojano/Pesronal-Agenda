@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import  Swal from "sweetalert2";
 import "./Dashboard.css";
 import api from "../../services/api";
 
@@ -22,6 +22,18 @@ export default function Dashboard() {
         setNextTasks(response.data.nextTasks);
       } catch (error) {
         console.error("Erro ao carregar métricas", error);
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
+        Toast.fire({
+          icon: 'error',
+          title: 'Erro ao carregar métricas',
+        });
       }
     }
 

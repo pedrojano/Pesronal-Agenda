@@ -5,7 +5,7 @@ import api from "../../services/api";
 import "./Login.css";
 import { FiMail, FiLock } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -27,10 +27,21 @@ export default function Login() {
         navigate("/dashboard");
       } catch (error) {
         console.error("Erro Google:", error);
-        toast.error("Falha no login com Google.");
+        Swal.fire({
+          icon: "error",
+          title: "Falha no login com Google",
+          text: "Ocorreu um erro ao tentar fazer login com o Google. Por favor, tente novamente.",
+          confirmButtonColor: "#e53e3e",
+        });
       }
     },
-    onError: () => toast.error("Login falhou"),
+    onError: () =>
+      Swal.fire({
+        icon: "error",
+        title: "Falha no login com Google",
+        text: "Ocorreu um erro ao tentar fazer login com o Google. Por favor, tente novamente.",
+        confirmButtonColor: "#e53e3e",
+      }),
   });
 
   async function handleLogin(event) {
@@ -39,12 +50,32 @@ export default function Login() {
       const response = await api.post("/auth/login", { email, password });
       localStorage.setItem("user_token", response.data.token);
       localStorage.setItem("userName", response.data.user.name);
+
       api.defaults.headers.common["Authorization"] =
         `Bearer ${response.data.token}`;
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: "Login realizado com sucesso!",
+      });
+
       navigate("/agenda");
     } catch (error) {
       console.error("Erro ao realizar login: ", error);
-      toast.error("E-mail ou senha incorretos.");
+      Swal.fire({
+        icon: "error",
+        title: "Ops...",
+        text: "Falha no login. Verifique suas credenciais e tente novamente.",
+        confirmButtonColor: "#e53e3e",
+      });
     }
   }
 
