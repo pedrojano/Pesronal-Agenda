@@ -1,12 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Agenda from "./pages/agenda/Agenda";
+import AgenteIA from "./pages/agenteIA/AgenteIA";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Profile from "./pages/profile/Profile";
 
@@ -15,9 +14,7 @@ import PrivateLayout from "./components/layout/PrivateLayout";
 
 function App() {
   return (
-   
     <BrowserRouter>
-     <ToastContainer position="top-right" autoClose={3000} theme="colored" />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -26,6 +23,7 @@ function App() {
           <Route element={<PrivateLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/agenda" element={<Agenda />} />
+            <Route path="/agenteIA" element={<AgenteIA />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>

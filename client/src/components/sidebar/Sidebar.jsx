@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FiHome, FiCalendar, FiUser, FiLogOut } from "react-icons/fi";
+import { FiHome,FiCalendar, FiUser, FiLogOut, FiUmbrella } from "react-icons/fi";
 import "./Sidebar.css";
 
 export default function Sidebar() {
@@ -25,10 +25,11 @@ export default function Sidebar() {
           <span>Dashboard</span>
         </NavLink>
 
+        <NavLink to="/agenteIA" className="nav-link"> 
+        <FiUmbrella size={20}/>
+          <span>Agente Inteligente</span>
+        </NavLink>
         
-        {/* Aqui vai entrar o link para o Agente virutal  */}
-        
-
         <NavLink to="/agenda" className="nav-link">
           <FiCalendar size={20} />
           <span>Agenda</span>
