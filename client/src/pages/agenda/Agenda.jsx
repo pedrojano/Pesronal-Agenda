@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import api from "../../services/api";
 import "./Agenda.css";
 
-import TaskModal from "./components/TaskModal/TaskModal";
+import TaskModal from "../../components/TaskModal/TaskModal";
 import NotificationTime from "../../components/notification/NotificationTime";
 
 moment.updateLocale("pt-br", {
