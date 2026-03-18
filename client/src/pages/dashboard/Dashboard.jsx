@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import  Swal from "sweetalert2";
+import Swal from "sweetalert2";
 import "./Dashboard.css";
 import api from "../../services/api";
 
@@ -25,14 +25,14 @@ export default function Dashboard() {
 
         const Toast = Swal.mixin({
           toast: true,
-          position: 'top-end',
+          position: "top-end",
           showConfirmButton: false,
           timer: 3000,
           timerProgressBar: true,
         });
         Toast.fire({
-          icon: 'error',
-          title: 'Erro ao carregar métricas',
+          icon: "error",
+          title: "Erro ao carregar métricas",
         });
       }
     }
@@ -74,13 +74,15 @@ export default function Dashboard() {
       </div>
 
       <div className="next-tasks-section">
+        {" "}
+        // TODO: colocar todas as tarefas pendentes dentro de uma barra de
+        rolagem, verificar a next-tasks-section.
         <div className="section-title">
           <h2>Próximas Tarefas:</h2>
           <Link to="/agenda" className="btn-agenda">
             Ver Agenda Completa
           </Link>
         </div>
-
         {nextTasks.length === 0 ? (
           <p style={{ color: "#999", textAlign: "center" }}>
             Nenhuma tarefa próxima.
@@ -89,12 +91,22 @@ export default function Dashboard() {
           nextTasks.map((task) => (
             <div key={task.id} className="task-row">
               <span className="task-time">
+                {"Dia: "}
                 {new Date(task.start_time).toLocaleDateString("pt-BR", {
                   day: "2-digit",
                   month: "2-digit",
                 })}
-                {" às "}
+
+                {" das "}
+
                 {new Date(task.start_time).toLocaleTimeString("pt-BR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+
+                {" às "}
+
+                {new Date(task.end_time).toLocaleTimeString("pt-BR", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}

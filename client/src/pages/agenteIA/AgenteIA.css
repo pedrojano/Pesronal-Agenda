@@ -1,26 +1,24 @@
-/* Variáveis de Design System */
 :root {
-  --ai-primary: #6366f1;       /* Indigo Vibrante */
+  --ai-primary: #6366f1;
   --ai-primary-hover: #4f46e5;
-  --ai-sidebar-bg: #f8fafc;    /* Fundo da barra lateral */
-  --ai-main-bg: #ffffff;       /* Fundo principal */
+  --ai-sidebar-bg: #f8fafc;
+  --ai-main-bg: #ffffff;
   --ai-text-dark: #1e293b;
   --ai-text-light: #64748b;
   --ai-border: #e2e8f0;
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-card:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-/* Container Geral - Ocupa a tela toda, sem scroll na página principal */
 .ai-dashboard {
   display: grid;
-  grid-template-columns: 400px 1fr; /* Lateral fixa | Conteúdo fluido */
-  height: calc(100vh - 60px); /* Ajuste conforme a altura do seu Header */
+  grid-template-columns: 400px 1fr;
+  height: calc(100vh - 60px);
   background: var(--ai-main-bg);
   overflow: hidden;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
-/* === BARRA LATERAL (INPUT) === */
 .ai-sidebar {
   background-color: var(--ai-sidebar-bg);
   border-right: 1px solid var(--ai-border);
@@ -70,7 +68,9 @@
   font-size: 1rem;
   line-height: 1.6;
   resize: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   font-family: inherit;
 }
 
@@ -80,10 +80,14 @@
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.btn-generate {
+.btn-generate {  
   margin-top: 1.5rem;
   width: 100%;
-  background: linear-gradient(135deg, var(--ai-primary), var(--ai-primary-hover));
+  background: linear-gradient(
+    135deg,
+    var(--ai-primary),
+    var(--ai-primary-hover)
+  );
   color: white;
   border: none;
   padding: 1rem;
@@ -108,15 +112,13 @@
   cursor: not-allowed;
 }
 
-/* === ÁREA PRINCIPAL (RESULTADO) === */
 .ai-results {
   padding: 2rem 3rem;
-  overflow-y: auto; /* Scroll apenas aqui dentro */
+  overflow-y: auto;
   background-image: radial-gradient(#e0e7ff 1px, transparent 1px);
-  background-size: 24px 24px; /* Textura sutil de pontos */
+  background-size: 24px 24px;
 }
 
-/* Scrollbar Personalizada */
 .ai-results::-webkit-scrollbar {
   width: 8px;
 }
@@ -128,7 +130,6 @@
   border-radius: 4px;
 }
 
-/* Estado Vazio */
 .empty-state {
   height: 100%;
   display: flex;
@@ -145,7 +146,6 @@
   color: #cbd5e1;
 }
 
-/* Timeline */
 .timeline-header {
   display: flex;
   justify-content: space-between;
@@ -158,11 +158,10 @@
   padding-left: 20px;
 }
 
-/* Linha Vertical da Timeline */
 .timeline-container::before {
-  content: '';
+  content: "";
   position: absolute;
-  left: 95px; /* Posição da linha vertical */
+  left: 95px;
   top: 10px;
   bottom: 0;
   width: 2px;
@@ -195,7 +194,6 @@
   color: var(--ai-text-light);
 }
 
-/* Bolinha na linha do tempo */
 .timeline-dot {
   width: 12px;
   height: 12px;
@@ -203,7 +201,7 @@
   border: 3px solid var(--ai-primary);
   border-radius: 50%;
   position: absolute;
-  left: 90px; /* Alinhado com a linha */
+  left: 90px;
   top: 5px;
   z-index: 2;
 }
@@ -216,7 +214,9 @@
   border-radius: 12px;
   border: 1px solid var(--ai-border);
   box-shadow: var(--shadow-card);
-  transition: transform 0.2s, border-color 0.2s;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
 }
 
 .task-card:hover {
@@ -248,6 +248,7 @@
   color: #f59e0b;
 }
 
+
 .btn-confirm-floating {
   position: fixed;
   bottom: 30px;
@@ -273,38 +274,37 @@
   background: #059669;
 }
 
-/* Responsividade Mobile */
 @media (max-width: 900px) {
   .ai-dashboard {
     grid-template-columns: 1fr;
     height: auto;
     overflow: visible;
   }
-  
+
   .ai-sidebar {
     border-right: none;
     border-bottom: 1px solid var(--ai-border);
   }
 
   .timeline-container::before {
-    left: 29px; /* Ajuste da linha no mobile */
+    left: 29px;
   }
-  
+
   .timeline-dot {
     left: 24px;
   }
-  
+
   .time-badge {
     width: auto;
     text-align: left;
     margin-bottom: 5px;
   }
-  
+
   .timeline-item {
     flex-direction: column;
     padding-left: 40px;
   }
-  
+
   .task-card {
     margin-left: 0;
   }

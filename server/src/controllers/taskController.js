@@ -78,11 +78,11 @@ exports.getMetrics = async (req, res) => {
       formattedStats[row.status] = parseInt(row.count);
     });
     const nextTasks = await db.query(
-      `SELECT id, title, start_time, status 
+      `SELECT id, title, start_time, end_time, status 
        FROM tasks 
        WHERE user_id = $1 
        AND status = 'pending' 
-       ORDER BY start_time ASC
+       ORDER BY start_time ASC, end_time ASC
        LIMIT 20`,             
       [userId]
     );

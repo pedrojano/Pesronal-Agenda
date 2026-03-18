@@ -27,7 +27,6 @@ exports.updateProfile = async (req, res) => {
     const { name, email, password } = req.body;
     const file = req.file;
 
-    // 1. Busca o usuário atual
     const userResult = await db.query("SELECT * FROM users WHERE id = $1", [
       userId,
     ]);
@@ -37,40 +36,36 @@ exports.updateProfile = async (req, res) => {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    // 2. Prepara os novos dados
     const newName = name || currentUser.name;
     const newEmail = email || currentUser.email;
     const newAvatar = file ? file.filename : currentUser.avatar;
 
-    // 3. Lógica da Senha (CRÍTICO: Criptografar se mudou)
-    let newPassword = currentUser.password; // Começa com a antiga
-    
+    let newPassword = currentUser.password;
+
     if (password && password.trim() !== "") {
       const salt = await bcrypt.genSalt(10);
       newPassword = await bcrypt.hash(password, salt);
     }
 
-    // 4. Atualiza no Banco
-    // IMPORTANTE: Adicionei ', avatar' no final do RETURNING
     const updateResult = await db.query(
       `UPDATE users 
        SET name = $1, email = $2, password = $3, avatar = $4 
        WHERE id = $5 
        RETURNING id, name, email, avatar`,
-      [newName, newEmail, newPassword, newAvatar, userId]
+      [newName, newEmail, newPassword, newAvatar, userId],
     );
 
-    // 5. Responde ao Frontend
     res.json({
       message: "Perfil atualizado com sucesso!",
-      user: updateResult.rows[0], // Agora inclui o avatar novo
+      user: updateResult.rows[0],
     });
-
   } catch (error) {
     console.error(error);
-    // Erro de email duplicado (Constraint Unique)
-    if (error.code === '23505') {
-        return res.status(400).json({ error: 'E-mail já está em uso por outro usuário.'});
+
+    if (error.code === "23505") {
+      return res
+        .status(400)
+        .json({ error: "E-mail já está em uso por outro usuário." });
     }
     res.status(500).json({ error: "Erro ao atualizar perfil" });
   }

@@ -116,9 +116,7 @@ export default function AgenteIA() {
           onClick={handleGenerate}
           disabled={loading || !input}
         >
-          {loading
-            ? "Processando Inteligência..."
-            : "Gerar Cronograma Otimizado"}
+          {loading ? "Gerando Cronograma..." : "Gerar Cronograma Otimizado"}
         </button>
       </aside>
 

@@ -5,11 +5,10 @@
 }
 
 .layout-content {
-  margin-left: 260px; 
   flex: 1;
   background-color: #f7fafc; 
   padding: 0;
-  transition: margin-left 0.3s ease; /
+  transition: margin-left 0.3s ease; 
 }
 
 @media (max-width: 768px) {

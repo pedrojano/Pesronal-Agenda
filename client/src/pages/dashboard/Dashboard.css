@@ -1,12 +1,13 @@
 .dashboard-container {
-  padding: 40px;
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  font-family: 'Segoe UI', sans-serif;
+  animation: fadeIn 0.5s ease-in-out;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .dashboard-header {
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
 }
 
 .dashboard-header h1 {
@@ -30,7 +31,7 @@
   background: white;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   transition: transform 0.2s;
@@ -54,23 +55,38 @@
   color: #333;
 }
 
-.card-pending { border-left: 5px solid #f6ad55; }
-.card-pending .number { color: #d69e2e; }
+.card-pending {
+  border-left: 5px solid #f6ad55;
+}
+.card-pending .number {
+  color: #d69e2e;
+}
 
-.card-done { border-left: 5px solid #48bb78; }
-.card-done .number { color: #38a169; }
+.card-done {
+  border-left: 5px solid #48bb78;
+}
+.card-done .number {
+  color: #38a169;
+}
 
-.card-canceled { border-left: 5px solid #e53e3e; }
-.card-canceled .number { color: #c53030; }
-
+.card-canceled {
+  border-left: 5px solid #e53e3e;
+}
+.card-canceled .number {
+  color: #c53030;
+}
 
 .next-tasks-section {
   background: white;
-  padding: 30px;
+  padding: 1.5rem;
   border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
 }
-
 .section-title {
   display: flex;
   justify-content: space-between;
@@ -118,6 +134,15 @@
   font-weight: 600;
 }
 
-.badge-pending { background: #ffeebc; color: #d69e2e; }
-.badge-done { background: #c6f6d5; color: #38a169; }
-.badge-canceled { background: #fed7d7; color: #c53030; }
+.badge-pending {
+  background: #ffeebc;
+  color: #d69e2e;
+}
+.badge-done {
+  background: #c6f6d5;
+  color: #38a169;
+}
+.badge-canceled {
+  background: #fed7d7;
+  color: #c53030;
+}
