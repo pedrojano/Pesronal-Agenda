@@ -14,7 +14,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://pesronal-agenda-n1ik.vercel.app",
+      "https://pesronal-agenda.vercel.app",
     ],
 
     methods: ["GET", "POST", "PUT", "DELETE"],
