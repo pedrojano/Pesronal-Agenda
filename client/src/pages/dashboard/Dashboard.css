@@ -92,6 +92,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .btn-agenda {
@@ -145,4 +146,25 @@
 .badge-canceled {
   background: #fed7d7;
   color: #c53030;
+}
+
+.tasks-list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.tasks-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+.tasks-list-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+.tasks-list-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.tasks-list-container::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }

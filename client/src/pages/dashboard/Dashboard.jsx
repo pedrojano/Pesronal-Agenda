@@ -50,6 +50,7 @@ export default function Dashboard() {
   }, []);
 
   return (
+   
     <div className="dashboard-container">
       <header className="dashboard-header">
         <h1>Olá, {userName}!</h1>
@@ -74,58 +75,55 @@ export default function Dashboard() {
       </div>
 
       <div className="next-tasks-section">
-        {" "}
-        // TODO: colocar todas as tarefas pendentes dentro de uma barra de
-        rolagem, verificar a next-tasks-section.
         <div className="section-title">
           <h2>Próximas Tarefas:</h2>
           <Link to="/agenda" className="btn-agenda">
             Ver Agenda Completa
           </Link>
         </div>
-        {nextTasks.length === 0 ? (
-          <p style={{ color: "#999", textAlign: "center" }}>
-            Nenhuma tarefa próxima.
-          </p>
-        ) : (
-          nextTasks.map((task) => (
-            <div key={task.id} className="task-row">
-              <span className="task-time">
-                {"Dia: "}
-                {new Date(task.start_time).toLocaleDateString("pt-BR", {
-                  day: "2-digit",
-                  month: "2-digit",
-                })}
 
-                {" das "}
-
-                {new Date(task.start_time).toLocaleTimeString("pt-BR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-
-                {" às "}
-
-                {new Date(task.end_time).toLocaleTimeString("pt-BR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-                {" - "}
-              </span>
-              <span className="task-title">
-                {" Tarefa: "}
-                {task.title}
-              </span>
-              <span className={`status-badge badge-${task.status}`}>
-                {task.status === "done"
-                  ? "Feito"
-                  : task.status === "canceled"
+        {/* NOVA DIV QUE VAI TER A BARRA DE ROLAGEM */}
+        <div className="tasks-list-container">
+          {nextTasks.length === 0 ? (
+            <p style={{ color: "#999", textAlign: "center", padding: "2rem" }}>
+              Nenhuma tarefa próxima.
+            </p>
+          ) : (
+            nextTasks.map((task) => (
+              <div key={task.id} className="task-row">
+                <span className="task-time">
+                  {"Dia: "}
+                  {new Date(task.start_time).toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                  })}
+                  {" das "}
+                  {new Date(task.start_time).toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                  {" às "}
+                  {new Date(task.end_time).toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                  {" - "}
+                </span>
+                <span className="task-title">
+                  {" Tarefa: "}
+                  {task.title}
+                </span>
+                <span className={`status-badge badge-${task.status}`}>
+                  {task.status === "done"
+                    ? "Feito"
+                    : task.status === "canceled"
                     ? "Cancelado"
                     : "Pendente"}
-              </span>
-            </div>
-          ))
-        )}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
