@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import api from "../../../../services/api";
 import "./TaskModal.css";
@@ -52,9 +52,10 @@ export default function TaskModal({
       const payload = {
         title,
         description,
-        start_time: startTime,
-        end_time: endTime,
+        start_time: startTime ? `${startTime}:00`.replace("T", " ") : null,
+        end_time: endTime ? `${endTime}:00`.replace("T", " ") : null,
         notify,
+        status: "pending",
       };
 
       if (taskToEdit) {
