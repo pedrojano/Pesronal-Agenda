@@ -82,7 +82,6 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        {/* NOVA DIV QUE VAI TER A BARRA DE ROLAGEM */}
         <div className="tasks-list-container">
           {nextTasks.length === 0 ? (
             <p style={{ color: "#999", textAlign: "center", padding: "2rem" }}>
