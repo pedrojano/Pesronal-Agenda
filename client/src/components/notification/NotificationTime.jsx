@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 import api from "../../services/api";
 
@@ -125,7 +125,7 @@ const playNotificationSound = () => {
 //Completar
 async function handleComplete(task, callback) {
   try {
-    await api.patch(`/tasks/${task.id}`, { status: "done" });
+    await api.put(`/tasks/${task.id}`, { status: "done" });
     Swal.fire("Boa!", "Tarefa concluída.", "success");
     if (callback) callback();
   } catch (error) {
@@ -135,7 +135,7 @@ async function handleComplete(task, callback) {
 // Cancelar
 async function handleCancel(task, callback) {
   try {
-    await api.patch(`/tasks/${task.id}`, { status: "canceled" });
+    await api.put(`/tasks/${task.id}`, { status: "canceled" });
     Swal.fire("Ok", "Cancelada.", "info");
     if (callback) callback();
   } catch (error) {

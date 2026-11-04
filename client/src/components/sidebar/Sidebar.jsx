@@ -55,12 +55,9 @@ export default function Sidebar() {
   //   </aside>
   // );
   return (
-    // A classe muda dinamicamente: 'sidebar open' ou 'sidebar closed'
     <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
-      
-      {/* Cabeçalho: Logo + Botão de Toggle */}
       <div className="sidebar-header">
-        {/* Mostra o logo apenas se estiver aberto */}
+        
         <div className={`sidebar-logo ${!isOpen && "hidden"}`}>
           Agenda Pro
         </div>
@@ -74,7 +71,7 @@ export default function Sidebar() {
         <NavLink 
             to="/dashboard" 
             className="nav-link"
-            title={!isOpen ? "Dashboard" : ""} // Tooltip nativo quando fechado
+            title={!isOpen ? "Dashboard" : ""}
         >
           <FiHome size={22} />
           <span className="link-text">Dashboard</span>
